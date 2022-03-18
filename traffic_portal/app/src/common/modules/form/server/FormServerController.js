@@ -60,13 +60,21 @@ var FormServerController = function(server, $scope, $location, $state, $uibModal
             });
     };
 
-    $scope.getProfileID = function(profileName) {
+    /**
+     * Gets a URL for a Profile's page.
+     *
+     * @param {string} profileName The name of the Profile for which to get a URL
+     * @returns {string | undefined} A relative URL to the page for the Profile
+     * with the given name (or `undefined` if it could not be found).
+     */
+    function getProfileID(profileName) {
         for (const profile of $scope.profiles) {
             if (profile.name === profileName) {
-                return "/#!/profiles/"+profile.id
+                return `/#!/profiles/${profile.id}`;
             }
         }
     };
+    $scope.getProfileID = getProfileID;
 
     var updateStatus = function(status) {
         serverService.updateStatus(server.id, { status: status.id, offlineReason: status.offlineReason })
@@ -225,9 +233,6 @@ var FormServerController = function(server, $scope, $location, $state, $uibModal
         getTypes();
         getCDNs();
         getProfiles(($scope.server.cdnId) ? $scope.server.cdnId : 0); // hacky but does the job. only when a cdn is selected can we fetch the appropriate profiles. otherwise, show no profiles.
-        if ($scope.server.profileNames != undefined) {
-            $scope.server.profileName = $scope.server.profileNames[0]
-        }
     };
     init();
 
