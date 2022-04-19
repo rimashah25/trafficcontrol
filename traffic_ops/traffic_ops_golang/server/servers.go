@@ -1481,7 +1481,7 @@ func Update(w http.ResponseWriter, r *http.Request) {
 		}
 		_, err := validateV4(&server, tx)
 		if err != nil {
-			api.HandleErr(w, r, tx, http.StatusBadRequest, err, nil)
+			api.HandleErr(w, r, tx, http.StatusInternalServerError, err, nil)
 			return
 		}
 		if err := dbhelpers.UpdateServerProfilesForV4(*server.ID, server.ProfileNames, tx); err != nil {
@@ -2101,7 +2101,7 @@ func createV4(inf *api.APIInfo, w http.ResponseWriter, r *http.Request) {
 
 	_, err := validateV4(&server, inf.Tx.Tx)
 	if err != nil {
-		api.HandleErr(w, r, inf.Tx.Tx, http.StatusBadRequest, err, nil)
+		api.HandleErr(w, r, inf.Tx.Tx, http.StatusInternalServerError, err, nil)
 		return
 	}
 
